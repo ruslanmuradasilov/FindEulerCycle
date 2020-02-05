@@ -30,9 +30,9 @@ int main()
     int test_num = 1;
     for (int i = 0; i < test_num; ++i)
     {
-        int nodes_num = 0, edges_num = 0;
+        int nodes_num = 10000, edges_num = 10000;
         Test test;
-        cin >> nodes_num >> edges_num;
+        //cin >> nodes_num >> edges_num;
         result = test.createTest(nodes_num, edges_num);
         results.first.push_back(result.first);
         results.second.push_back(result.second);
@@ -64,6 +64,7 @@ int main()
     {
         start = clock();
         graphs[i].initGraph(results.first[i], results.second[i]);
+        fcout << endl << "Steps: " << graphs[i].steps_counter << endl;
         if (!graphs[i].checkForEulerCycle())
         {
             rtn = graphs[i].graphCompletion(&res);
@@ -88,15 +89,16 @@ int main()
     }
 
     //1st alg
-    //10000 10000 - avg of 10 - 3 sec
-    //60000 60000 - 272 sec
+    //10000 10000 - avg of 10 - 3 sec -> 1 sec, 308380219 (308 mln = 100 mln to init)
+    //60000 60000 - 272 sec -> 87 sec, 9311878367 (9,3 mlrd)
     //70000 70000 - terminate called after throwing an instance of 'std::bad_alloc'
+    //Complexity: O(3*n^2)
 
     //2nd alg
-    //10000 10000 - avg of 10 - 12.8 sec
-    //60000 60000 - 19 min
-    //100000 100000 - 32 min
-
+    //10000 10000 - avg of 10 - 12.8 sec -> 5.4 sec, 670 mln = 100 mln to init
+    //60000 60000 - 19 min -> 132 sec, 13793837875 (13,7 mlrd); 181 sec, 21093952423 (21 mlrd)
+    //100000 100000 - 32 min -> 499 sec (8,3 min), 59911117855 (59 mlrd)
+    //Complexity: O(6*n^2)
 
     return 0;
 }

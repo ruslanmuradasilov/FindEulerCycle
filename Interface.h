@@ -11,7 +11,7 @@ class Interface
     ofstream output;
 
 public:
-    Interface(const string &input_path) : input(input_path)
+    explicit Interface(const string &input_path) : input(input_path)
     {}
 
     pair<vector<vector<pair<int, int>>>, vector<int> > readGraphs();
