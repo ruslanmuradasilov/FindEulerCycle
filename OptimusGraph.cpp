@@ -218,7 +218,7 @@ bool OptimusGraph::edgeExists(int i, int j)
 //    }
 //}
 
-int OptimusGraph::graphСompletion(vector<int> *res)
+int OptimusGraph::graphCompletion(vector<int> *res)
 {
     int p = 0, pp = 0;
     bool check;

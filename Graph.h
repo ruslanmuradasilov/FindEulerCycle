@@ -23,7 +23,7 @@ public:
 
     virtual void findEulerCycle(vector<int> *);
 
-    virtual int graphСompletion(vector<int> *);
+    virtual int graphCompletion(vector<int> *);
 
     unsigned long long steps_counter = 0;
 };

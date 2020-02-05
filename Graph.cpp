@@ -91,7 +91,7 @@ void Graph::findEulerCycle(vector<int> *res)
     }
 }
 
-int Graph::graphСompletion(vector<int> *res)
+int Graph::graphCompletion(vector<int> *res)
 {
     int p = 0, pp = 0;
     bool check;

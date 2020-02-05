@@ -56,7 +56,7 @@ int main()
 //            cout << results.first[i][j].first << " " << results.first[i][j].second << endl;
 //        }
 //    }
-    vector<Graph> graphs(results.second.size());
+    vector<OptimusGraph> graphs(results.second.size());
     int rtn;
     vector<int> res;
     ofstream fcout("out.txt");
@@ -66,7 +66,7 @@ int main()
         graphs[i].initGraph(results.first[i], results.second[i]);
         if (!graphs[i].checkForEulerCycle())
         {
-            rtn = graphs[i].graphСompletion(&res);
+            rtn = graphs[i].graphCompletion(&res);
             if (rtn == 0)
             {
                 for (int j = 0; j < res.size(); ++j)

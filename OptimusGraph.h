@@ -30,5 +30,5 @@ public:
 
     bool edgeExists(int, int);
 
-    int graphСompletion(vector<int> *) override;
+    int graphCompletion(vector<int> *) override;
 };
