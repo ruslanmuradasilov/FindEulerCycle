@@ -30,5 +30,5 @@ public:
 
     bool edgeExists(int, int);
 
-    int recursiveComplementGraph(vector<int> *) override;
+    int graphСompletion(vector<int> *) override;
 };

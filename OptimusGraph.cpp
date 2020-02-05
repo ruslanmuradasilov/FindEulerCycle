@@ -28,8 +28,11 @@ void OptimusGraph::initGraph(vector<pair<int, int>> edges, int n)
 
     for (auto i : edges)
         for (int j = 0; j < n; j++)
+        {
             if (i.first == j || i.second == j)
                 deg[j]++;
+            steps_counter++;
+        }
 }
 
 void OptimusGraph::print()
@@ -92,7 +95,10 @@ void OptimusGraph::findEulerCycle(vector<int> *res)
 {
     int first = 0;//стартовая вершина
     while (!deg[first])//проверка стартовой вершины на изолированность
+    {
         first++;
+        steps_counter++;
+    }
 
     stack<int> st;
     st.push(first);
@@ -116,6 +122,7 @@ void OptimusGraph::findEulerCycle(vector<int> *res)
                     p = 1;
                     break;
                 }
+                steps_counter++;
             }
             if (p == 1)
                 break;
@@ -127,8 +134,11 @@ void OptimusGraph::findEulerCycle(vector<int> *res)
         } else
         {
             for (int j = 0; j < edges.size(); j++)
+            {
+                steps_counter++;
                 if ((edges[j].first == k && edges[j].second == v) || (edges[j].first == v && edges[j].second == k))
                     edges.erase(edges.begin() + j);
+            }
             st.push(k);// добавили новую вершину в стек
         }
     }
@@ -138,8 +148,11 @@ void OptimusGraph::findEulerCycle(vector<int> *res)
 bool OptimusGraph::edgeExists(int i, int j)
 {
     for (auto k : edges)
+    {
+        steps_counter++;
         if ((k.first == i && k.second == j) || (k.first == j && k.second == i))
             return true;
+    }
     return false;
 }
 
@@ -205,62 +218,70 @@ bool OptimusGraph::edgeExists(int i, int j)
 //    }
 //}
 
-int OptimusGraph::recursiveComplementGraph(vector<int> *res)
+int OptimusGraph::graphСompletion(vector<int> *res)
 {
-    int p = 0;
-    bool check = checkForEulerCycle();//проверяем граф на эйлеровость
-    if (check)//если эйлеров
+    int p = 0, pp = 0;
+    bool check;
+    while (true)
     {
-        findEulerCycle(res);
-        return 0;
-    } else//если неэйлеров
-    {
-        for (int i = 0; i < n; ++i)
+        check = checkForEulerCycle();//проверяем граф на эйлеровость
+        if (check)//если эйлеров
         {
-            if (deg[i] % 2 == 1)//ищем нечвершину
+            findEulerCycle(res);
+            return 0;
+        } else//если неэйлеров
+        {
+            for (int i = 0; i < n; ++i)
             {
-                int pp = 0;
-                for (int j = 0; j < n && j != i; j++)
+                if (deg[i] % 2 == 1)//ищем нечвершину
                 {
-                    if (deg[j] % 2 == 1)//находим еще одну нечвершину,
+                    pp = 0, p = 0;
+                    for (int j = i + 1; j < n; j++)
                     {
-                        if (edgeExists(i, j))//с которой нет смежного ребра
-                            continue;
-                        edges.emplace_back(i, j);//и добавляем его
-                        deg[i]++;
-                        deg[j]++;
-                        pp = 1;
+                        steps_counter++;
+                        if (deg[j] % 2 == 1 && j != i)//находим еще одну нечвершину,
+                        {
+                            if (edgeExists(i, j))//с которой нет смежного ребра
+                                continue;
+                            edges.emplace_back(i, j);//и добавляем его
+                            deg[i]++;
+                            deg[j]++;
+                            pp = 1;
+                            break;
+                        }
+                    }
+                    if (pp == 1)
+                    {
+                        p = 1;//добавили ребро
                         break;
                     }
                 }
-                if (pp == 1)
-                {
-                    p = 1;//добавили ребро
-                    break;
-                }
             }
-        }
-        if (p == 0)//если не нашли две нечвершины, не соединенные ребром
-        {
-            int pp = 0;
-            for (int i = 0; i < n; ++i)
+            if (p == 0)//если не нашли две нечвершины, не соединенные ребром
             {
-                for (int j = 0; j < n && j != i; ++j)
+                pp = 0;
+                for (int i = 0; i < n; ++i)
                 {
-                    if (edgeExists(i, j))
-                        continue;
-                    edges.emplace_back(i, j);//то добавляем любое ребро
-                    deg[i]++;
-                    deg[j]++;
-                    pp = 1;
-                    break;
+                    for (int j = i + 1; j < n; ++j)
+                    {
+                        steps_counter++;
+                        if(j != i)
+                        {
+                            if (edgeExists(i, j))
+                                continue;
+                            edges.emplace_back(i, j);//то добавляем любое ребро
+                            deg[i]++;
+                            deg[j]++;
+                            pp = 1;
+                            break;
+                        }
+                    }
+                    if (pp == 1)
+                        break;
                 }
-                if (pp == 1)
-                    break;
+                if (pp == 0)//граф полный
+                    return -1;
             }
-            if (pp == 0)//граф полный
-                return -1;
         }
-        recursiveComplementGraph(res);
     }
 }

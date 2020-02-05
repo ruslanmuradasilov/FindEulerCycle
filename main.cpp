@@ -45,7 +45,7 @@ int main()
     tests.writeTests(test_num, "in.txt", results);
 
     double seconds;
-    clock_t start = clock();
+    clock_t start, end;
     Interface interface("in.txt");
     results = interface.readGraphs();
 //    for (int i = 0; i < results.second.size(); ++i)
@@ -56,16 +56,17 @@ int main()
 //            cout << results.first[i][j].first << " " << results.first[i][j].second << endl;
 //        }
 //    }
-    vector<OptimusGraph> graphs(results.second.size());
+    vector<Graph> graphs(results.second.size());
     int rtn;
     vector<int> res;
     ofstream fcout("out.txt");
     for (int i = 0; i < results.first.size(); ++i)
     {
+        start = clock();
         graphs[i].initGraph(results.first[i], results.second[i]);
         if (!graphs[i].checkForEulerCycle())
         {
-            rtn = graphs[i].recursiveComplementGraph(&res);
+            rtn = graphs[i].graphСompletion(&res);
             if (rtn == 0)
             {
                 for (int j = 0; j < res.size(); ++j)
@@ -78,44 +79,24 @@ int main()
                 fcout << "Graph is not eulerian" << endl;
         } else
             fcout << "Graph is already eulerian" << endl;
-        fcout << endl << "******************************************************************************************" << endl;
+        end = clock();
+        seconds = (end - start) / CLOCKS_PER_SEC;
+        fcout << endl << "Steps: " << graphs[i].steps_counter << endl;
+        fcout << "Time: " << seconds << endl;
+        fcout << "******************************************************************************************" << endl;
         res.clear();
     }
-    clock_t end = clock();
-    seconds = (end - start) / CLOCKS_PER_SEC;
-    fcout << "Time: " << seconds << endl;
 
     //1st alg
     //10000 10000 - avg of 10 - 3 sec
     //60000 60000 - 272 sec
-    //70000 70000 - stack overflow
+    //70000 70000 - terminate called after throwing an instance of 'std::bad_alloc'
 
     //2nd alg
     //10000 10000 - avg of 10 - 12.8 sec
     //60000 60000 - 19 min
     //100000 100000 - 32 min
 
-
-//    vector<OptimusGraph> graphs2(results.second.size());
-//    int rtn2;
-//    vector<int> res2;
-//    for (int i = 0; i < results.first.size(); ++i)
-//    {
-//        graphs2[i].initGraph(results.first[i], results.second[i]);
-//        if (graphs2[i].checkForEulerCycle() == false)
-//        {
-//            rtn2 = graphs2[i].recursiveComplementGraph(&res2);
-//
-//            if (rtn2 == 0)
-//                for (int i = 0; i < res2.size(); ++i)
-//                    fcout << res2[i] + 1 << " ";
-//            else
-//                fcout << "Graph is not eulerian";
-//            fcout << endl;
-//        } else
-//            fcout << "Graph is already eulerian" << endl;
-//        res2.clear();
-//    }
 
     return 0;
 }

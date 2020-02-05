@@ -1,5 +1,8 @@
 #pragma once
+#include <iostream>
+#include <fstream>
 #include <vector>
+#include <stack>
 #include "Interface.h"
 
 using namespace std;
@@ -20,5 +23,7 @@ public:
 
     virtual void findEulerCycle(vector<int> *);
 
-    virtual int recursiveComplementGraph(vector<int> *);
+    virtual int graphСompletion(vector<int> *);
+
+    unsigned long long steps_counter = 0;
 };
