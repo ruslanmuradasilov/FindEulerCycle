@@ -1,9 +1,9 @@
 #pragma once
+
 #include <iostream>
-#include <fstream>
 #include <vector>
+#include <set>
 #include <stack>
-#include "Interface.h"
 
 using namespace std;
 
@@ -24,6 +24,8 @@ public:
     virtual void findEulerCycle(vector<int> *);
 
     virtual int graphCompletion(vector<int> *);
+
+    bool isCycleEulerian(vector<int>);
 
     unsigned long long steps_counter = 0;
 };

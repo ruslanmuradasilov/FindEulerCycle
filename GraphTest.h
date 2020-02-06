@@ -3,9 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <stack>
 #include <ctime>
-#include "Graph.h"
 
 using namespace std;
 
@@ -74,24 +72,4 @@ public:
         }
         output.close();
     }
-
-//    bool checkForEulerCycle(pair<vector<pair<int, int>>, int> graph)
-//    {
-//        vector<int> deg(graph.second);
-//        for (int i = 0; i < deg.size(); ++i)
-//        {
-//            deg[graph.first[i].first]++;
-//        }
-//        int oddVertex = 0;
-//        for (int i = 0; i < graph.second; ++i)
-//        {
-//            if (deg[i] % 2 == 1)
-//                oddVertex++;
-//        }
-//
-//        if (oddVertex > 0)// если есть вершина с нечетной степенью, то граф не является эйлеровым
-//            return false;
-//
-//        return true;   // граф является эйлеровым
-//    }
 };

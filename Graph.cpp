@@ -134,10 +134,10 @@ int Graph::graphCompletion(vector<int> *res)
                 pp = 0;
                 for (int i = 0; i < n; ++i)
                 {
-                    for (int j = i + 1; j < n && j != i; ++j)
+                    for (int j = i + 1; j < n; ++j)
                     {
                         steps_counter++;
-                        if (matrix[i][j] == 0)//то добавляем любое ребро
+                        if (matrix[i][j] == 0 && j != i)//то добавляем любое ребро
                         {
                             matrix[i][j]++;
                             matrix[j][i]++;
@@ -155,4 +155,17 @@ int Graph::graphCompletion(vector<int> *res)
             }
         }
     }
+}
+
+bool Graph::isCycleEulerian(vector<int> res)
+{
+    set<pair<int, int>> edges;
+    for (int i = 0; i < res.size() - 1; ++i)
+    {
+        pair<int, int> edge(res[i], res[i + 1]);
+        pair<int, int> edgeReversed(res[i + 1], res[i]);
+        if (!edges.emplace(edge).second || !edges.emplace(edgeReversed).second)
+            return false;
+    }
+    return true;
 }

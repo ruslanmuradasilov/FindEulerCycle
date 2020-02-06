@@ -1,26 +1,7 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <stack>
-#include <set>
-#include <time.h>
-#include "OptimusGraph.h"
 #include "GraphTest.h"
+#include "Interface.h"
 
 using namespace std;
-
-bool isCycleEulerian(vector<int> res)
-{
-    set<pair<int, int>> edges;
-    for (int i = 0; i < res.size() - 1; ++i)
-    {
-        pair<int, int> edge(res[i], res[i + 1]);
-        pair<int, int> edgeReversed(res[i + 1], res[i]);
-        if (!edges.emplace(edge).second || !edges.emplace(edgeReversed).second)
-            return false;
-    }
-    return true;
-}
 
 int main()
 {
@@ -44,10 +25,12 @@ int main()
     }
     tests.writeTests(test_num, "in.txt", results);
 
-    double seconds;
-    clock_t start, end;
-    Interface interface("in.txt");
+    Interface interface("in.txt", "out.txt");
     results = interface.readGraphs();
+    Solver solver;
+    solver.solve(results);
+    interface.writeAnswer(solver);
+
 //    for (int i = 0; i < results.second.size(); ++i)
 //    {
 //        cout << results.second[i] << endl;
@@ -56,37 +39,37 @@ int main()
 //            cout << results.first[i][j].first << " " << results.first[i][j].second << endl;
 //        }
 //    }
-    vector<OptimusGraph> graphs(results.second.size());
-    int rtn;
-    vector<int> res;
-    ofstream fcout("out.txt");
-    for (int i = 0; i < results.first.size(); ++i)
-    {
-        start = clock();
-        graphs[i].initGraph(results.first[i], results.second[i]);
-        fcout << endl << "Steps: " << graphs[i].steps_counter << endl;
-        if (!graphs[i].checkForEulerCycle())
-        {
-            rtn = graphs[i].graphCompletion(&res);
-            if (rtn == 0)
-            {
-                for (int j = 0; j < res.size(); ++j)
-                    fcout << res[j] + 1 << " ";
-                if (isCycleEulerian(res))
-                    fcout << endl << "The Cycle is eulerian" << endl;
-                else
-                    fcout << endl << "Error" << endl;
-            } else
-                fcout << "Graph is not eulerian" << endl;
-        } else
-            fcout << "Graph is already eulerian" << endl;
-        end = clock();
-        seconds = (end - start) / CLOCKS_PER_SEC;
-        fcout << endl << "Steps: " << graphs[i].steps_counter << endl;
-        fcout << "Time: " << seconds << endl;
-        fcout << "******************************************************************************************" << endl;
-        res.clear();
-    }
+//    vector<OptimusGraph> graphs(results.second.size());
+//    int rtn;
+//    vector<int> res;
+//    ofstream fcout("out.txt");
+//    for (int i = 0; i < results.first.size(); ++i)
+//    {
+//        start = clock();
+//        graphs[i].initGraph(results.first[i], results.second[i]);
+//        fcout << endl << "Steps: " << graphs[i].steps_counter << endl;
+//        if (!graphs[i].checkForEulerCycle())
+//        {
+//            rtn = graphs[i].graphCompletion(&res);
+//            if (rtn == 0)
+//            {
+//                for (int j = 0; j < res.size(); ++j)
+//                    fcout << res[j] + 1 << " ";
+//                if (graphs[i].isCycleEulerian(res))
+//                    fcout << endl << "The Cycle is eulerian" << endl;
+//                else
+//                    fcout << endl << "Error" << endl;
+//            } else
+//                fcout << "Graph is not eulerian" << endl;
+//        } else
+//            fcout << "Graph is already eulerian" << endl;
+//        end = clock();
+//        seconds = (end - start) / CLOCKS_PER_SEC;
+//        fcout << endl << "Steps: " << graphs[i].steps_counter << endl;
+//        fcout << "Time: " << seconds << endl;
+//        fcout << "******************************************************************************************" << endl;
+//        res.clear();
+//    }
 
     //1st alg
     //10000 10000 - avg of 10 - 3 sec -> 1 sec, 308380219 (308 mln = 100 mln to init)
